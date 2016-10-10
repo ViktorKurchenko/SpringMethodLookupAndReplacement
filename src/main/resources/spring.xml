@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- METHOD LOOKUP -->
+	<bean id="key" class="beans.KeyProvider" scope="prototype"/>
+
+	<bean id="unlocker" class="beans.AbstractLockOpenerImpl">
+		<lookup-method name="getKey" bean="key"/>
+	</bean>
+
+	<!-- METHOD REPLACEMENT -->
+	<bean id="replacer" class="beans.KeyMethodReplacer"/>
+
+	<bean id="hackedUnlocker" class="beans.LockOpenerImpl">
+		<replaced-method name="open" replacer="replacer"/>
+	</bean>
+
+</beans>
